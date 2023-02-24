@@ -14,34 +14,38 @@ public class KnapsackDP {
 //            weights[i] = random.nextInt(5) + 1; // random weight between 1 and 5
 //            values[i] = random.nextInt(10) + 1; // random value between 1 and 10
 //        }
-        int capacity = 50;
-        int numItems = 20;
-        int populationSize = 100;
-        int maxGenerations = 100;
+        int capacity = 500;
+        int numItems = 200;
+        int populationSize = 1000;
+        int maxGenerations = 1000;
         double mutationProbability = 0.01;
-//        int[] itemWeights = new int[numItems];
-//        int[] itemValues = new int[numItems];
-//        Random rand = new Random();
-//        for (int i = 0; i < numItems; i++) {
-//            itemWeights[i] = rand.nextInt(10) + 1;
-//            itemValues[i] = rand.nextInt(20) + 1;
-////            System.out.println(itemWeights[i] + " - " + itemValues[i] + ", ");
-//        }
+        int[] itemWeights = new int[numItems];
+        int[] itemValues = new int[numItems];
+        Random rand = new Random();
+        for (int i = 0; i < numItems; i++) {
+            itemWeights[i] = rand.nextInt(10) + 1;
+            itemValues[i] = rand.nextInt(50) + 1;
+//            System.out.println(itemWeights[i] + " - " + itemValues[i] + ", ");
+        }
 
-        int[] itemWeights =new int []{5, 10, 1, 5, 6, 1, 2, 2, 5, 5, 1, 4, 5, 6, 10, 10, 1, 6, 10, 4};
-        int[] itemValues = new int[]{3, 14, 20, 20, 19, 3, 14, 19, 19, 20, 3, 16, 2, 20, 20, 16, 10, 7, 20, 20};
+//        int[] itemWeights =new int []{7, 5, 3, 4, 10, 9, 5, 2, 9, 1, 6, 5, 8, 8, 5, 8, 6, 10, 3, 2};
+//        int[] itemValues = new int[]{7, 1, 16, 10, 2, 19, 19, 9, 7, 2, 8, 15, 13, 2, 9, 2, 3, 1, 17, 18};
 
         // Print input
         System.out.println("Capacity: " + capacity);
         System.out.println("Weights: " + Arrays.toString(itemWeights));
         System.out.println("Values: " + Arrays.toString(itemValues));
 
+        long startTimeGA = System.nanoTime();
         KnapsackGA knapsackGA = new KnapsackGA(capacity, numItems, populationSize, maxGenerations,
                 mutationProbability, itemWeights, itemValues);
         knapsackGA.solve();
-
+        long endTimeGA   = System.nanoTime();
+        long totalTimeGA = endTimeGA - startTimeGA;
+        System.out.println("GA runtime: " + totalTimeGA);
 
         // Solve knapsack problem
+        long startTimeDP = System.nanoTime();
         int[][] dp = new int[numItems + 1][capacity + 1];
         for (int i = 1; i <= numItems; i++) {
             for (int j = 1; j <= capacity; j++) {
@@ -55,6 +59,9 @@ public class KnapsackDP {
         int maxVal = dp[numItems][capacity];
 
         // Print solution
-        System.out.println("Maximum value: " + maxVal);
+        System.out.println("Maximum value(DP): " + maxVal);
+        long endTimeDP   = System.nanoTime();
+        long totalTimeDP = endTimeDP - startTimeDP;
+        System.out.println("GA runtime: " + totalTimeDP);
     }
 }

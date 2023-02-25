@@ -77,8 +77,46 @@ public class KnapsackGA {
 //        int[] bestSolution = population.get(0);
 //        System.out.println("Best solution found: " + toString(bestSolution));
 //    }
-
-    private void initializePopulation() {
+//    public void solve() {
+//        initializePopulation();
+////        for (int generation = 0; generation < maxGenerations; generation++) {
+////            List<int[]> offspring = new ArrayList<>();
+////            for (int i = 0; i < populationSize; i++) {
+////                int[] parent1 = selectParent();
+////                int[] parent2 = selectParent();
+////                int[] child = crossover(parent1, parent2);
+////                mutate(child);
+////                offspring.add(child);
+////            }
+////            population = selectSurvivors(offspring);
+////            if (generation % 10 == 0) {
+////                System.out.println("Generation " + generation +
+////                        ": Best fitness = " + getFitness(population.get(0)));
+////            }
+////        }
+//        double fitness = 0;
+//        int generation = 1;
+//        while (fitness != maxGenerations) {
+//            List<int[]> offspring = new ArrayList<>();
+//            for (int i = 0; i < populationSize; i++) {
+//                int[] parent1 = selectParent();
+//                int[] parent2 = selectParent();
+//                int[] child = crossover(parent1, parent2);
+//                mutate(child);
+//                offspring.add(child);
+//            }
+//            population = selectSurvivors(offspring);
+//            fitness = getFitness(population.get(0));
+////            if (generation % 10 == 0) {
+//                System.out.println("Generation " + generation +
+//                        ": Best fitness = " + getFitness(population.get(0)));
+////            }
+//            generation++;
+//        }
+//        int[] bestSolution = population.get(0);
+//        System.out.println("Best solution found: " + toString(bestSolution));
+//    }
+        private void initializePopulation() {
         for (int i = 0; i < populationSize; i++) {
             int[] chromosome = new int[numItems];
             for (int j = 0; j < numItems; j++) {
@@ -130,42 +168,42 @@ public class KnapsackGA {
         }
     }
 
-    private List<int[]> selectSurvivors(List<int[]> offspring) {
-        List<int[]> combinedPopulation = new ArrayList<>();
-        combinedPopulation.addAll(population);
-        combinedPopulation.addAll(offspring);
-        combinedPopulation.sort((c1, c2) -> Double.compare(getFitness(c2), getFitness(c1)));
-        List<int[]> survivors = new ArrayList<>();
-        for (int i = 0; i < populationSize; i++) {
-            survivors.add(combinedPopulation.get(i));
-        }
-        return survivors;
-    }
 //    private List<int[]> selectSurvivors(List<int[]> offspring) {
 //        List<int[]> combinedPopulation = new ArrayList<>();
 //        combinedPopulation.addAll(population);
 //        combinedPopulation.addAll(offspring);
-//        int totalFitness = 0;
-//        double[] relativeFitness = new double[combinedPopulation.size()];
-//        for (int i = 0; i < combinedPopulation.size(); i++) {
-//            double fitness = getFitness(combinedPopulation.get(i));
-//            totalFitness += fitness;
-//            relativeFitness[i] = fitness;
-//        }
-//        for (int i = 1; i < relativeFitness.length; i++) {
-//            relativeFitness[i] += relativeFitness[i - 1];
-//        }
+//        combinedPopulation.sort((c1, c2) -> Double.compare(getFitness(c2), getFitness(c1)));
 //        List<int[]> survivors = new ArrayList<>();
 //        for (int i = 0; i < populationSize; i++) {
-//            double rand = new Random().nextDouble() * totalFitness;
-//            int index = Arrays.binarySearch(relativeFitness, rand);
-//            if (index < 0) {
-//                index = -index - 1;
-//            }
-//            survivors.add(combinedPopulation.get(index));
+//            survivors.add(combinedPopulation.get(i));
 //        }
 //        return survivors;
 //    }
+    private List<int[]> selectSurvivors(List<int[]> offspring) {
+        List<int[]> combinedPopulation = new ArrayList<>();
+        combinedPopulation.addAll(population);
+        combinedPopulation.addAll(offspring);
+        int totalFitness = 0;
+        double[] relativeFitness = new double[combinedPopulation.size()];
+        for (int i = 0; i < combinedPopulation.size(); i++) {
+            double fitness = getFitness(combinedPopulation.get(i));
+            totalFitness += fitness;
+            relativeFitness[i] = fitness;
+        }
+        for (int i = 1; i < relativeFitness.length; i++) {
+            relativeFitness[i] += relativeFitness[i - 1];
+        }
+        List<int[]> survivors = new ArrayList<>();
+        for (int i = 0; i < populationSize; i++) {
+            double rand = new Random().nextDouble() * totalFitness;
+            int index = Arrays.binarySearch(relativeFitness, rand);
+            if (index < 0) {
+                index = -index - 1;
+            }
+            survivors.add(combinedPopulation.get(index));
+        }
+        return survivors;
+    }
     private double getFitness(int[] chromosome) {
 //        int totalWeight = 0;
 //        int totalValue = 0;

@@ -27,6 +27,9 @@ public class KnapsackGA {
 
     }
 
+    /**
+     * Thu tuc tai tao: lai ghep -> dot bien -> lua chon ca the thich nghi
+     */
     public void solve() {
         initializePopulation();
         for (int generation = 0; generation < maxGenerations; generation++) {
@@ -47,6 +50,10 @@ public class KnapsackGA {
         int[] bestSolution = population.get(0);
         System.out.println("Best solution found: " + toString(bestSolution));
     }
+
+    /**
+     *
+     */
 //    public void solve() {
 //        initializePopulation();
 //        int generation = 0;
@@ -132,13 +139,19 @@ public class KnapsackGA {
 //        int index2 = rand.nextInt(populationSize);
 //        return getFitness(population.get(index1)) > getFitness(population.get(index2)) ? population.get(index1) : population.get(index2);
 //    }
+
+    /**
+     * Chon ngau nhien cha me tu quan the
+     */
     private int[] selectParent() {
         Random rand = new Random();
-        int index1 = rand.nextInt(populationSize);
-//        int index2 = rand.nextInt(populationSize);
-//        return getFitness(population.get(index1)) > getFitness(population.get(index2)) ? population.get(index1) : population.get(index2);
-        return population.get(index1);
+        int index = rand.nextInt(populationSize);
+        return population.get(index);
     }
+
+    /**
+     * Ham lai ghep: chon ngau nhien diem bat ki index tren NST. Lai ghep tu bo me ra 1 NST con
+     */
     private int[] crossover(int[] parent1, int[] parent2) {
         int[] child = new int[numItems];
         Random rand = new Random();
@@ -160,6 +173,10 @@ public class KnapsackGA {
 //            }
 //        }
 //    }
+
+    /**
+     * Ham dot bien: ty le dot bien mutationProbability, lat 1 bit bat ki trong NST
+     */
     private void mutate(int[] child) {
         Random rand = new Random();
         if (rand.nextDouble() < mutationProbability) {
@@ -168,6 +185,10 @@ public class KnapsackGA {
         }
     }
 
+
+    /**
+     * Ham chon loc: sap xep giam dan do thich nghi
+     */
 //    private List<int[]> selectSurvivors(List<int[]> offspring) {
 //        List<int[]> combinedPopulation = new ArrayList<>();
 //        combinedPopulation.addAll(population);
@@ -179,6 +200,10 @@ public class KnapsackGA {
 //        }
 //        return survivors;
 //    }
+
+    /**
+     * Ham chon loc: Banh xe xo so
+     */
     private List<int[]> selectSurvivors(List<int[]> offspring) {
         List<int[]> combinedPopulation = new ArrayList<>();
         combinedPopulation.addAll(population);
@@ -204,9 +229,12 @@ public class KnapsackGA {
         }
         return survivors;
     }
+
+    /**
+     * Ham tinh do thich nghi
+     * Dua vao tong gia tri cac do vat.
+     */
     private double getFitness(int[] chromosome) {
-//        int totalWeight = 0;
-//        int totalValue = 0;
         long totalWeight = 0;
         long totalValue = 0;
         for (int i = 0; i < numItems; i++) {
@@ -239,13 +267,4 @@ public class KnapsackGA {
         return sb.toString();
     }
 
-//    public static void main(String[] args) {
-//        int knapsackCapacity = 50;
-//        int numItems = 20;
-//        int populationSize = 100;
-//        int maxGenerations = 1000;
-//        double mutationProbability = 0.01;
-//        KnapsackGA knapsackGA = new KnapsackGA(knapsackCapacity, numItems, populationSize, maxGenerations, mutationProbability);
-//        knapsackGA.solve();
-//    }
 }
